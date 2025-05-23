@@ -8,7 +8,7 @@ export default function Submit() {
   const [phrase, setPhrase] = useState('');
   const [meaning, setMeaning] = useState('');
   const [message, setMessage] = useState('');
-  const { user, role } = useUser();
+  const { user, role, username, loading } = useUser();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,14 +19,21 @@ export default function Submit() {
       return;
     }
 
+    if (!user || !user.email || !username) {
+      setMessage("User info not loaded yet.");
+      return;
+    }
+
     try {
       await addDoc(collection(db, 'entries'), {
         phrase,
         meaning,
         uploadedBy: user.email,
+        uploadedByUsername: username,
         approved: role === 'admin',
         timestamp: Timestamp.now()
       });
+
 
       setMessage(role === 'admin' ? "Phrase submitted and auto-approved!" : "Phrase submitted for moderation.");
       setPhrase('');

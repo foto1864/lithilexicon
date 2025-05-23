@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from './UserContext';
 import { db } from './firebase';
 import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
+import { auth } from './firebase';
 
 export default function Home() {
   const { user, role, loading } = useUser();
   const [entries, setEntries] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchApproved = async () => {
@@ -34,7 +38,8 @@ export default function Home() {
           {!user && <li><Link to="/login">Login</Link></li>}
           {user && <li><Link to="/submit">Submit Phrase</Link></li>}
           {user && role === 'admin' && <li><Link to="/admin">Admin Dashboard</Link></li>}
-          {user && <li><button onClick={() => window.location.reload()}>Logout</button></li>}
+          {user && role === 'subscriber' && <li><Link to="/profile">My Profile</Link></li>}
+          {user && <li><button onClick={() => {signOut(auth).then(() => navigate('/')); }}>Logout</button></li>}
         </ul>
       </nav>
 
@@ -55,7 +60,7 @@ export default function Home() {
         <ul>
           {entries.map(entry => (
             <li key={entry.id}>
-              <strong>{entry.phrase}</strong>: {entry.meaning} — uploaded by {entry.uploadedBy}
+              <strong>{entry.phrase}</strong>: {entry.meaning} — uploaded by {entry.uploadedByUsername || entry.uploadedBy}
             </li>
           ))}
         </ul>

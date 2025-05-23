@@ -10,8 +10,9 @@ export function useUser() {
 }
 
 export function UserProvider({ children }) {
-  const [user, setUser] = useState(null);         // firebase auth user
-  const [role, setRole] = useState(null);         // 'admin' or 'subscriber'
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
+  const [username, setUsername] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,12 +22,16 @@ export function UserProvider({ children }) {
       if (firebaseUser) {
         const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
         if (userDoc.exists()) {
-          setRole(userDoc.data().role);
+          const data = userDoc.data();
+          setRole(data.role || 'subscriber');
+          setUsername(data.username || null);
         } else {
-          setRole('subscriber'); // fallback
+          setRole('subscriber');
+          setUsername(null);
         }
       } else {
         setRole(null);
+        setUsername(null);
       }
 
       setLoading(false);
@@ -36,7 +41,7 @@ export function UserProvider({ children }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, role, loading }}>
+    <UserContext.Provider value={{ user, role, username, loading }}>
       {children}
     </UserContext.Provider>
   );
