@@ -4,6 +4,7 @@ import Register from './Register';
 import Login from './Login';
 import Home from './Home';
 import Submit from './Submit';
+import AdminDashboard from './AdminDashboard';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/register" element={<div><Register /></div>} />
         <Route path="/login" element={<div><Login /></div>} />
         <Route path="/submit" element={<div><Submit /></div>} />
+        <Route path="/admin" element={<div><AdminDashboard /></div>} />
       </Routes>
     </Router>
   );
