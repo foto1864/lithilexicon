@@ -55,7 +55,7 @@ export default function Home() {
 
       <h2>Approved Entries</h2>
       {entries.length === 0 ? (
-        <p>No approved phrases yet.</p>
+        <p>No approved nigga phrases yet.</p>
       ) : (
         <ul>
           {entries.map(entry => (
