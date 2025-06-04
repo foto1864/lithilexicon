@@ -1,0 +1,11 @@
+@media (max-width: 768px) {
+    .submit-form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    }
+}
+
+.submit-form input {
+    margin-right: 10px;
+}

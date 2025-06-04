@@ -4,11 +4,13 @@ import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { useUser } from './UserContext';
 import { useNavigate } from 'react-router-dom';
 
+import './Submit.css';
+
 export default function Submit() {
   const [phrase, setPhrase] = useState('');
   const [meaning, setMeaning] = useState('');
   const [message, setMessage] = useState('');
-  const { user, role, username, loading } = useUser();
+  const { user, role, username } = useUser();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -46,7 +48,7 @@ export default function Submit() {
   return (
     <div>
       <h2>Submit a Phrase</h2>
-      <form onSubmit={handleSubmit}>
+      <form className='submit-form' onSubmit={handleSubmit}>
         <input type="text" placeholder="Phrase" value={phrase} onChange={e => setPhrase(e.target.value)} required />
         <input type="text" placeholder="Meaning" value={meaning} onChange={e => setMeaning(e.target.value)} required />
         <button type="submit">Submit</button>
