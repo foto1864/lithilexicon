@@ -9,6 +9,7 @@ import ForgotPassword from './/auth/ForgotPassword';
 // Import from 'app'
 import SubmitPreview from './/app/SubmitPreview';
 import LetterPage from './/app/LetterPage';
+import SearchResults from './app/SearchResults';
 
 // Import from current
 import Home from './/app/Home';
@@ -35,6 +36,7 @@ function App() {
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="/submit-preview" element={<SubmitPreview />} />
           <Route path="/letter/:letter" element={<LetterPage />} />
+          <Route path="/search" element={<SearchResults />} />
         </Route>
       </Routes>
     </Router>

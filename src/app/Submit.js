@@ -38,15 +38,21 @@ export default function Submit() {
   };
 
   return (
-    <div>
+    <div className='submit-div'>
       <h2>Υποβολή Φράσης</h2>
+      <p>
+        Όταν υποβάλετε τη λέξη ή φράση σας, τότε αυτή θα μπει σε σειρά προτεραιότητας για να ελεγχθεί από έναν διαχειριστή.
+        Εάν η φράση σας εγκριθεί θα γίνει και αυτή μέρος του λεξικού μας!
+        Θερμή παράκληση να μην υποβάλετε φράσεις σε γλώσσες άλλες εκτός της ελληνικής, καθώς και να προσέχετε ότι τονίζετε όλες τις λέξεις.
+      </p>
       <form className='submit-form' onSubmit={handlePreviewRedirect}>
-        <input type="text" placeholder="Φράση" value={phrase} onChange={e => setPhrase(e.target.value)} required />
-        <input type="text" placeholder="Σημασία" value={meaning} onChange={e => setMeaning(e.target.value)} required />
-        <button type="submit">Προεπισκόπηση</button>
+        <div>
+          <input type="text" placeholder="Φράση" value={phrase} onChange={e => setPhrase(e.target.value)} required />
+          <input type="text" placeholder="Σημασία" value={meaning} onChange={e => setMeaning(e.target.value)} required />
+        </div>
+        <button className='preview-button' type="submit">Προεπισκόπηση</button>
       </form>
       <p>{message}</p>
-      <button onClick={() => navigate('/')}>Πίσω στην Αρχική</button>
     </div>
   );
 }

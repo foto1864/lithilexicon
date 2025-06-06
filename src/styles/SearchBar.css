@@ -1,14 +1,22 @@
 .search-bar {
-  margin-top: 15px;
-  margin-bottom: 15px;
-  text-align: left;
+  margin-left: -30px;
+  margin-bottom: 10px;
+  margin-top: -5px;
+  text-align: center;
 }
 
 .search-bar input {
-  padding: 8px 12px;
-  width: 80%;
+  width: 100%;
   max-width: 400px;
+  padding: 8px 12px;
   font-size: 1em;
   border: 1px solid #ccc;
   border-radius: 6px;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  transition: border-color 0.3s ease;
+}
+
+.search-bar input:focus {
+  border-color: #777;
+  outline: none;
 }

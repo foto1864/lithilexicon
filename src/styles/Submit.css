@@ -6,13 +6,23 @@
     }
 }
 
+
 .submit-form input {
-    margin-right: 10px;
+  width: 300px;
+  height: 30px;    
+  font-size: 16px;
+  margin-right: 10px;
 }
 
 .submit-preview {
   padding: 20px;
 }
+
+.preview-button {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
 
 .warning {
   background: #ffe0e0;
@@ -27,4 +37,8 @@
 
 .actions button {
   margin-right: 10px;
+}
+
+.submit-div p {
+  width: 600px;
 }

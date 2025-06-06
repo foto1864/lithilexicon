@@ -9,6 +9,7 @@ import '..//styles/Layout.css';
 
 // Import from current
 import LetterNav from './LetterNav';
+import SearchBar from './SearchBar';
 
 export default function Layout() {
   const { user, role } = useUser();
@@ -17,6 +18,9 @@ export default function Layout() {
     <div className='layout-container'>
        <header className='custom-header'>
         <h2>Ληθιλεξικόν</h2>
+
+        <SearchBar />
+
         <nav>
           <Link to="/">Αρχική</Link>
           {!user && <Link to="/login">Σύνδεση</Link>} 
@@ -26,8 +30,8 @@ export default function Layout() {
         </nav>
 
         <LetterNav />
-
       </header>
+
 
       <main>
         <Outlet />
