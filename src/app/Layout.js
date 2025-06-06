@@ -1,7 +1,11 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import { useUser } from './UserContext';
-import './Layout.css';
+
+// Import from 'user'
+import { useUser } from '..//user/UserContext';
+
+// Import from 'styles'
+import '..//styles/Layout.css';
 
 export default function Layout() {
   const { user, role } = useUser();

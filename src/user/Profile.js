@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useUser } from './UserContext';
-import { db, auth } from './firebase';
 import {
   collection, query, where, getDocs, deleteDoc, doc, addDoc, Timestamp
 } from 'firebase/firestore';
 import { deleteUser } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+
+// Import from 'user'
+import { useUser } from '..//user/UserContext';
+
+// Import from 'utils'
+import { db, auth } from '..//utils/firebase';
 
 export default function Profile() {
   const { user, role, loading, username } = useUser();

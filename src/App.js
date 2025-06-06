@@ -1,13 +1,21 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Register from './Register';
-import Login from './Login';
-import Home from './Home';
-import Submit from './Submit';
-import AdminDashboard from './AdminDashboard';
-import Profile from './Profile';
-import ForgotPassword from './ForgotPassword';
-import Layout from './Layout';
+
+// Import from 'auth'
+import Register from './/auth/Register';
+import Login from './/auth/Login';
+import ForgotPassword from './/auth/ForgotPassword';
+
+// Import from current
+import Home from './/app/Home';
+import Submit from './/app/Submit';
+import Layout from './/app/Layout';
+
+// Import from 'admin'
+import AdminDashboard from './/admin/AdminDashboard';
+
+// Import from 'user'
+import Profile from './/user/Profile';
 
 function App() {
   return (

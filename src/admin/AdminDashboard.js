@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import {
   collection, query, getDocs, updateDoc, deleteDoc, doc, orderBy
 } from 'firebase/firestore';
-import { db } from './firebase';
-import { useUser } from './UserContext';
-
 import { useNavigate } from 'react-router-dom';
 
-// at the top of your component:
+// Import from 'utils'
+import { db } from '../utils/firebase';
+
+// Import from 'user'
+import { useUser } from '../user/UserContext';
 
 export default function AdminDashboard() {
   const { role, loading } = useUser();

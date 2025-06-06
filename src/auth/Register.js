@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from './firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+
+// Import from 'utils'
+import { auth, db } from '..//utils/firebase';
 
 export default function Register() {
   const [username, setUsername] = useState('');

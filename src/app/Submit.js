@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { db } from './firebase';
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
-import { useUser } from './UserContext';
 import { useNavigate } from 'react-router-dom';
 
-import './Submit.css';
+// Import from 'utils'
+import { db } from '..//utils/firebase';
+
+// Import from 'utils'
+import { useUser } from '..//user/UserContext';
+
+// Import from 'styles'
+import '..//styles/Submit.css';
 
 export default function Submit() {
   const [phrase, setPhrase] = useState('');

@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useUser } from './UserContext';
-import { db } from './firebase';
 import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
-import { auth } from './firebase';
+
+// Import from 'utils'
+import { auth } from '..//utils/firebase';
+import { db } from '..//utils/firebase';
+
+// Import from user'
+import { useUser } from '../user/UserContext';
 
 export default function Home() {
   const { user, role, loading } = useUser();

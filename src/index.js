@@ -1,8 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
+// Import from current
 import App from './App';
-import './index.css';
-import { UserProvider } from './UserContext';
+
+// Import from 'styles'
+import './/styles/index.css';
+
+// Import from 'user'
+import { UserProvider } from './/user/UserContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
