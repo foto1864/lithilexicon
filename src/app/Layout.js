@@ -7,6 +7,9 @@ import { useUser } from '..//user/UserContext';
 // Import from 'styles'
 import '..//styles/Layout.css';
 
+// Import from current
+import LetterNav from './LetterNav';
+
 export default function Layout() {
   const { user, role } = useUser();
 
@@ -15,13 +18,15 @@ export default function Layout() {
        <header className='custom-header'>
         <h2>Ληθιλεξικόν</h2>
         <nav>
-          <Link to="/">Home</Link> |{' '}
-          {!user && <Link to="/register">Register</Link>}
-          {!user && <Link to="/login">Login</Link>} 
-          {user && <Link to="/submit">Submit</Link>} 
-          {user && <Link to="/profile">My Profile</Link>} 
+          <Link to="/">Αρχική</Link>
+          {!user && <Link to="/login">Σύνδεση</Link>} 
+          {user && <Link to="/submit">Υποβολή Φράσης</Link>} 
+          {user && <Link to="/profile">Προφίλ</Link>} 
           {user && role === 'admin' && <Link to="/admin">Admin</Link>}
         </nav>
+
+        <LetterNav />
+
       </header>
 
       <main>

@@ -6,6 +6,10 @@ import Register from './/auth/Register';
 import Login from './/auth/Login';
 import ForgotPassword from './/auth/ForgotPassword';
 
+// Import from 'app'
+import SubmitPreview from './/app/SubmitPreview';
+import LetterPage from './/app/LetterPage';
+
 // Import from current
 import Home from './/app/Home';
 import Submit from './/app/Submit';
@@ -29,6 +33,8 @@ function App() {
           <Route path="admin" element={<AdminDashboard />} />
           <Route path="profile" element={<Profile />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="/submit-preview" element={<SubmitPreview />} />
+          <Route path="/letter/:letter" element={<LetterPage />} />
         </Route>
       </Routes>
     </Router>

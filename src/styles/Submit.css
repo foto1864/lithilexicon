@@ -9,3 +9,22 @@
 .submit-form input {
     margin-right: 10px;
 }
+
+.submit-preview {
+  padding: 20px;
+}
+
+.warning {
+  background: #ffe0e0;
+  border: 1px solid red;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.preview {
+  margin-bottom: 20px;
+}
+
+.actions button {
+  margin-right: 10px;
+}

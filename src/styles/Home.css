@@ -1,0 +1,18 @@
+ul li {
+    margin-bottom: 10px;;
+}
+
+button {
+    background-color: rgb(46, 97, 145);
+    border: none;
+    border-radius: 5px;
+    margin-left: 3px;
+    margin-right: 3px;
+    padding: 5px;
+    color: white;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: rgb(36, 78, 117);
+}

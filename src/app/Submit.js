@@ -1,11 +1,5 @@
-import React, { useState } from 'react';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
-
-// Import from 'utils'
-import { db } from '..//utils/firebase';
-
-// Import from 'utils'
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useUser } from '..//user/UserContext';
 
 // Import from 'styles'
@@ -15,51 +9,44 @@ export default function Submit() {
   const [phrase, setPhrase] = useState('');
   const [meaning, setMeaning] = useState('');
   const [message, setMessage] = useState('');
-  const { user, role, username } = useUser();
+  const { user } = useUser();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const location = useLocation();
+    useEffect(() => {
+      if (location.state) {
+        setPhrase(location.state.phrase || '');
+        setMeaning(location.state.meaning || '');
+      }
+  }, [location.state]);
+
+
+  const handlePreviewRedirect = (e) => {
     e.preventDefault();
 
     if (!user) {
-      setMessage("You must be logged in to submit.");
+      setMessage("Πρέπει να είστε συνδεδεμένος για να κάνετε υποβολή.");
       return;
     }
 
-    if (!user || !user.email || !username) {
-      setMessage("User info not loaded yet.");
-      return;
-    }
-
-    try {
-      await addDoc(collection(db, 'entries'), {
+    navigate('/submit-preview', {
+      state: {
         phrase,
-        meaning,
-        uploadedBy: user.email,
-        uploadedByUsername: username,
-        approved: role === 'admin',
-        timestamp: Timestamp.now()
-      });
-
-
-      setMessage(role === 'admin' ? "Phrase submitted and auto-approved!" : "Phrase submitted for moderation.");
-      setPhrase('');
-      setMeaning('');
-    } catch (error) {
-      setMessage("Error: " + error.message);
-    }
+        meaning
+      }
+    });
   };
 
   return (
     <div>
-      <h2>Submit a Phrase</h2>
-      <form className='submit-form' onSubmit={handleSubmit}>
-        <input type="text" placeholder="Phrase" value={phrase} onChange={e => setPhrase(e.target.value)} required />
-        <input type="text" placeholder="Meaning" value={meaning} onChange={e => setMeaning(e.target.value)} required />
-        <button type="submit">Submit</button>
+      <h2>Υποβολή Φράσης</h2>
+      <form className='submit-form' onSubmit={handlePreviewRedirect}>
+        <input type="text" placeholder="Φράση" value={phrase} onChange={e => setPhrase(e.target.value)} required />
+        <input type="text" placeholder="Σημασία" value={meaning} onChange={e => setMeaning(e.target.value)} required />
+        <button type="submit">Προεπισκόπηση</button>
       </form>
       <p>{message}</p>
-      <button onClick={() => navigate('/')}>Back to Home</button>
+      <button onClick={() => navigate('/')}>Πίσω στην Αρχική</button>
     </div>
   );
 }

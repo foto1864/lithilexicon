@@ -6,9 +6,10 @@
 
 .layout-container main {
   flex: 1;
-  padding-left: 200px;
-  padding-right: 200px;
+  padding-left: 350px;
+  padding-right: 350px; 
   padding-top: 50px;
+  padding-bottom: 100px;
 }
 
 .layout-container footer {
@@ -27,6 +28,39 @@
   align-items: center;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
 }
+
+nav a {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* Letter navigation */
+
+.letter-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 10px;
+  padding-top: 20px;
+  justify-content: center;
+}
+
+.letter-nav a {
+  text-decoration: none;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 6px;
+  color: #333;
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.letter-nav a:hover {
+  background-color: #ddd;
+}
+
 
 /* Tablet */
 @media (max-width: 1024px) {
