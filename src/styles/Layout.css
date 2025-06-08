@@ -4,25 +4,28 @@
   min-height: 100vh;
 }
 
+/* Main area centering with max-width */
 .layout-container main {
   flex: 1;
-  padding-left: 350px;
-  padding-right: 350px; 
-  padding-top: 50px;
-  padding-bottom: 100px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem; /* top, sides, bottom */
 }
 
+/* Footer styling */
 .layout-container footer {
   background-color: #eee;
-  padding: 10px;
+  padding: 1rem;
   text-align: center;
   box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.3);
+  font-size: 0.9rem;
 }
 
+/* Header styling */
 .custom-header {
   background-color: #eee;
-  padding-bottom: 25px;
-  padding-top: 10px;
+  padding: 1rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,61 +33,69 @@
 }
 
 nav a {
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 0 0.75rem;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
 }
 
 /* Letter navigation */
-
 .letter-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 2px;
-  padding: 10px;
-  padding-top: 20px;
+  gap: 0.4rem;
   justify-content: center;
+  margin: 2rem 0;
 }
 
 .letter-nav a {
-  text-decoration: none;
-  padding: 6px 10px;
+  padding: 0.5rem 0.75rem;
   border: 1px solid #ccc;
-  margin-left: 5px;
-  margin-right: 5px;
   border-radius: 6px;
-  color: #333;
   background-color: #f0f0f0;
+  color: #333;
   font-weight: bold;
+  text-decoration: none;
 }
 
 .letter-nav a:hover {
   background-color: #ddd;
 }
 
-
-/* Tablet */
+/* Tablet breakpoint */
 @media (max-width: 1024px) {
   .layout-container main {
-    padding-left: 100px;
-    padding-right: 100px;
+    max-width: 700px;
+    padding: 2rem 1.25rem 4rem;
   }
 }
 
-/* Smartphones */
+/* Smartphone breakpoint */
 @media (max-width: 768px) {
   .layout-container main {
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 30px;
+    max-width: 100%;
+    padding: 1.5rem 1rem 3rem;
   }
 
   .custom-header {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 0.75rem 0;
     text-align: center;
   }
 
   .layout-container footer {
-    padding: 15px 10px;
+    padding: 1rem;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav a {
+    margin: 0.5rem;
   }
 }

@@ -16,3 +16,14 @@ button:hover {
     cursor: pointer;
     background-color: rgb(36, 78, 117);
 }
+
+a {
+  color: #0077cc;              /* Χρώμα του link */
+  text-decoration-color: #0077cc; /* Χρώμα υπογράμμισης */
+}
+
+/* Αν θέλεις να αλλάζει όταν περνάει το ποντίκι */
+a:hover {
+  color: #6a54b8;
+  text-decoration-color: #6a54b8;
+}

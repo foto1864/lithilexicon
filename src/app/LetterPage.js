@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { db } from '../utils/firebase';
 import LetterNav from './LetterNav';
@@ -39,7 +39,6 @@ export default function LetterPage() {
 
   return (
     <div>
-      {/* <LetterNav /> */}
       <h2>Λέξεις/Φράσεις από «{letter}»:</h2>
 
       {loading ? (
@@ -50,7 +49,9 @@ export default function LetterPage() {
         <ul>
           {entries.map(entry => (
             <li key={entry.id}>
-              <strong>{entry.phrase}</strong>: {entry.meaning} — uploaded by {entry.uploadedByUsername || entry.uploadedBy}
+              <Link to={`/entry/${entry.id}`}>
+                <strong>{entry.phrase}</strong>
+              </Link>: {entry.meaning} — uploaded by {entry.uploadedByUsername || entry.uploadedBy}
             </li>
           ))}
         </ul>

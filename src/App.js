@@ -10,6 +10,7 @@ import ForgotPassword from './/auth/ForgotPassword';
 import SubmitPreview from './/app/SubmitPreview';
 import LetterPage from './/app/LetterPage';
 import SearchResults from './app/SearchResults';
+import EntryPage from './app/EntryPage';
 
 // Import from current
 import Home from './/app/Home';
@@ -31,6 +32,7 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
           <Route path="submit" element={<Submit />} />
+          <Route path="/entry/:id" element={<EntryPage />} />
           <Route path="admin" element={<AdminDashboard />} />
           <Route path="profile" element={<Profile />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
