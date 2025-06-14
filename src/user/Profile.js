@@ -54,30 +54,30 @@ export default function Profile() {
 
   return (
     <div>
-      <h2>My Profile</h2>
+      <h2>Το προφίλ μου</h2>
       <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Role:</strong> {role}</p>
-      <p><strong>Username:</strong> {username}</p>
+      <p><strong>Ρόλος:</strong> {role}</p>
+      <p><strong>Όνομα χρήστη:</strong> {username}</p>
 
 
       <hr />
-      <h3>My Uploaded Phrases</h3>
+      <h3>Φράσεις που έχω ανεβάσει</h3>
       {entries.length === 0 ? (
-        <p>You haven’t uploaded any phrases yet.</p>
+        <div><p>Δεν έχετε ανεβάσει καμία φράση ακόμα.</p>
+        <p><button onClick={ () => navigate('/submit')}>Ανεβάστε τώρα μια!</button></p></div>
       ) : (
         <ul>
           {entries.map(entry => (
             <li key={entry.id}>
-              <strong>{entry.phrase}</strong>: {entry.meaning} ({entry.approved ? 'Approved' : 'Pending'})
+              <strong>{entry.phrase}</strong>: {entry.meaning} ({entry.approved ? 'Εγκρίθηκε' : 'Υπό εξέταση'})
             </li>
           ))}
         </ul>
       )}
 
       <hr />
-      <h3>Delete My Account</h3>
       {!showConfirm ? (
-        <button onClick={() => setShowConfirm(true)}>Delete My Account</button>
+        <button onClick={() => setShowConfirm(true)}>Διαγραφή λογαριασμού</button>
       ) : (
         <div>
           <p>This will permanently delete your account and phrases. Are you sure?</p>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 
 // Imports
@@ -8,7 +8,7 @@ import { useUser } from '../user/UserContext';
 import '..//styles/Home.css';
 
 export default function Home() {
-  const { user, role, loading } = useUser();
+  const { user, role, loading , username } = useUser();
   const navigate = useNavigate();
 
   // Εδώ βάζεις τις χειροκίνητες "επιλεγμένες" φράσεις
@@ -39,30 +39,39 @@ export default function Home() {
     <div>
       <h1>Ληθιλεξικόν - Αρχική</h1>
 
-      <nav>
-        <ul>
-          <li><Link to="/">Αρχική</Link></li>
-          {!user && <li><Link to="/register">Register</Link></li>}
-          {!user && <li><Link to="/login">Σύνδεση</Link></li>}
-          {user && <li><Link to="/submit">Υποβολή Φράσης</Link></li>}
-          {user && role === 'admin' && <li><Link to="/admin">Admin Dashboard</Link></li>}
-          {user && role === 'subscriber' && <li><Link to="/profile">Προφίλ</Link></li>}
-          {user && <li><button onClick={() => { signOut(auth).then(() => navigate('/')); }}>Αποσύνδεση</button></li>}
-        </ul>
-      </nav>
-
       {loading ? (
         <p>Loading user...</p>
       ) : user ? (
-        <p>Welcome <strong>{user.email}</strong> — Role: <strong>{role}</strong></p>
+        <p>Καλωσήρθες, <strong>{username}</strong> — Ρόλος: <strong>{role}</strong></p>
       ) : (
-        <p>You are not logged in.</p>
+        <p>Δεν έχετε συνδεθεί.</p>
       )}
+
+      <nav>
+        <ul style={{listStyle: 'none', padding: 0}}> 
+          {user && <li><button onClick={() => { signOut(auth).then(() => navigate('/')); }}>Αποσύνδεση</button></li>}
+          {!user && <li><button onClick={ () => navigate('/login')}>Σύνδεση</button></li>}
+        </ul>
+      </nav>
 
       <hr />
 
-      <div className='align-nav'>
+      <div>
+        <p><strong>Καλωσήρθατε στο Ληθιλεξικόν!</strong></p>
+        <p>Σκοπός του Ληθιλεξικού είναι να φέρει ξανά στο φως ξεχασμένες ελληνικές λέξεις και φράσεις.
+          Για τους νεότερους, αποτελεί μια ευκαιρία να γνωρίσουν εκφράσεις που δεν έχουν ξανακούσει, 
+          προσφέροντας μια γεύση από την παλαιότερη μορφή της γλώσσας μας.
+        </p>
+        <p>Μπορείτε να περιηγηθείτε στο περιεχόμενο του λεξικού επιλέγοντας το αρχικό γράμμα κάθε λέξης,
+          ενώ σας ενθαρρύνουμε να συμβάλετε προσθέτοντας τις δικές σας φράσεις και λέξεις, βοηθώντας έτσι 
+          να εμπλουτίσουμε μαζί αυτή τη μοναδική συλλογή.
+        </p>
+        <p>
+          <button onClick={ () => navigate('/submit')}>Υποβάλετε μια φράση!</button>
+        </p>
       </div>
+
+      <hr />
 
       <h2>Επιλεγμένες Φράσεις</h2>
       <ul>
@@ -75,3 +84,4 @@ export default function Home() {
     </div>
   );
 }
+

@@ -6,10 +6,8 @@
 
 .layout-container main {
   flex: 1;
-  padding-left: 350px;
-  padding-right: 350px; 
-  padding-top: 50px;
-  padding-bottom: 100px;
+  width: 60%;
+  margin: 50px auto 100px auto; /* top, horizontal auto, bottom */
 }
 
 .layout-container footer {
@@ -61,21 +59,18 @@ nav a {
   background-color: #ddd;
 }
 
-
 /* Tablet */
 @media (max-width: 1024px) {
   .layout-container main {
-    padding-left: 100px;
-    padding-right: 100px;
+    width: 80%;
   }
 }
 
 /* Smartphones */
 @media (max-width: 768px) {
   .layout-container main {
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 30px;
+    width: 90%;
+    margin-top: 30px;
   }
 
   .custom-header {
