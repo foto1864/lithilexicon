@@ -10,6 +10,9 @@ import './/styles/index.css';
 // Import from 'user'
 import { UserProvider } from './/user/UserContext';
 
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
@@ -20,3 +23,5 @@ root.render(
     </UserProvider>
   </React.StrictMode>
 );
+
+serviceWorkerRegistration.register();
