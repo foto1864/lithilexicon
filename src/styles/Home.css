@@ -1,29 +1,79 @@
-ul li {
-    margin-bottom: 10px;;
+/* Φόρτωση Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Full-width section */
+.section {
+  width: 100%;
+  margin: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
+/* Εσωτερικό περιεχόμενο section */
+.section-content {
+  width: 60%;
+  margin: 0 auto;
+  margin-bottom: 0;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1024px) {
+  .section-content {
+    width: 75%;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-content {
+    width: 95%;
+  }
+}
+
+/* Typography */
+body {
+  font-family: 'Inter', Arial, Verdana, sans-serif;
+}
+
+.site-title {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Buttons */
 button {
-    background-color: rgb(46, 97, 145);
-    border: none;
-    border-radius: 5px;
-    margin-left: 3px;
-    margin-right: 3px;
-    padding: 5px;
-    color: white;
+  background-color: rgb(46, 97, 145);
+  font-family: inherit;
+  border: none;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 6px 12px;
+  color: white;
+  font-weight: 500;
 }
 
 button:hover {
-    cursor: pointer;
-    background-color: rgb(36, 78, 117);
+  cursor: pointer;
+  background-color: rgb(36, 78, 117);
 }
 
+/* Links */
 a {
-  color: #0077cc;              /* Χρώμα του link */
-  text-decoration-color: #0077cc; /* Χρώμα υπογράμμισης */
+  color: #0077cc;
+  text-decoration-color: #0077cc;
 }
 
-/* Αν θέλεις να αλλάζει όταν περνάει το ποντίκι */
 a:hover {
   color: #6a54b8;
   text-decoration-color: #6a54b8;
+}
+
+/* Extra spacing for list */
+ul {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+ul li {
+  margin-bottom: 10px;
 }

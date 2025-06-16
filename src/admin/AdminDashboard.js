@@ -5,8 +5,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { db } from '../utils/firebase';
 import { useUser } from '../user/UserContext';
-import SearchBar from '../app/SearchBar';
-import '../styles/AdminDashboard.css'; // βάλε CSS εδώ για το highlight
+import '../styles/Layout.css'; 
 
 export default function AdminDashboard() {
   const { role, loading } = useUser();
@@ -17,10 +16,8 @@ export default function AdminDashboard() {
   const [editMeaning, setEditMeaning] = useState('');
 
   const [pendingEntries, setPendingEntries] = useState([]);
-  const [approvedEntries, setApprovedEntries] = useState([]);
-  const [showApproved, setShowApproved] = useState(false);
+  const [ , setApprovedEntries ] = useState([]);
 
-  const [searchQuery, setSearchQuery] = useState('');
   const entryRefs = useRef({}); // κρατάει DOM refs για κάθε entry
 
   useEffect(() => {
@@ -35,29 +32,6 @@ export default function AdminDashboard() {
       fetchAll();
     }
   }, [role]);
-
-  useEffect(() => {
-    if (!searchQuery) return;
-
-    const all = [...pendingEntries, ...approvedEntries];
-    const found = all.find(e =>
-      e.phrase.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    if (found && entryRefs.current[found.id]) {
-      const el = entryRefs.current[found.id];
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-      // Remove highlight from all
-      Object.values(entryRefs.current).forEach(ref => {
-        if (ref) ref.classList.remove('highlight');
-      });
-
-      // Add highlight only to found
-      el.classList.add('highlight');
-    }
-  }, [searchQuery, pendingEntries, approvedEntries]);
-
 
   const handleApprove = async (id) => {
     await updateDoc(doc(db, 'entries', id), { approved: true });
@@ -99,46 +73,14 @@ export default function AdminDashboard() {
   if (role !== 'admin') return <p>Access denied.</p>;
 
   return (
-    <div className='admin-div'>
-      <h2>Φράσεις προς έγκριση</h2>
-      {pendingEntries.length === 0 ? (
-        <p>Δεν υπάρχουν εκκρεμείς φράσεις προς έγκριση</p>
-      ) : (
-        <ul>
-          {pendingEntries.map(entry => (
-            <li key={entry.id} ref={el => entryRefs.current[entry.id] = el}>
-              {editingId === entry.id ? (
-                <div>
-                  <input value={editPhrase} onChange={e => setEditPhrase(e.target.value)} />
-                  <input value={editMeaning} onChange={e => setEditMeaning(e.target.value)} />
-                  <button onClick={() => handleSave(entry.id)}>Αποθήκευση</button>
-                  <button onClick={handleCancel}>Ακύρωση</button>
-                </div>
-              ) : (
-                <div>
-                  <strong>{entry.phrase}</strong>: {entry.meaning} — by {entry.uploadedBy}
-                  <button onClick={() => handleApprove(entry.id)}>Έγκριση</button>
-                  <button onClick={() => handleReject(entry.id)}>Απόρριψη</button>
-                  <button onClick={() => handleEdit(entry)}>Επεξεργασία</button>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <hr />
-
-     <button onClick={() => setShowApproved(prev => !prev)}>
-        {showApproved ? 'Κρύψε τα εγκεκριμένα' : 'Δες όλα τα εγκεκριμένα'}
-      </button>
-
-      {showApproved && (
-        <>
-          <SearchBar onSearch={setSearchQuery} />
-          <h2>Εγκεκριμένες Φράσεις</h2>
+    <div className="section">
+      <div className="section-content">
+        <h2>Φράσεις προς έγκριση</h2>
+        {pendingEntries.length === 0 ? (
+          <p>Δεν υπάρχουν εκκρεμείς φράσεις προς έγκριση</p>
+        ) : (
           <ul>
-            {approvedEntries.map(entry => (
+            {pendingEntries.map(entry => (
               <li key={entry.id} ref={el => entryRefs.current[entry.id] = el}>
                 {editingId === entry.id ? (
                   <div>
@@ -150,17 +92,18 @@ export default function AdminDashboard() {
                 ) : (
                   <div>
                     <strong>{entry.phrase}</strong>: {entry.meaning} — by {entry.uploadedBy}
+                    <button onClick={() => handleApprove(entry.id)}>Έγκριση</button>
+                    <button onClick={() => handleReject(entry.id)}>Απόρριψη</button>
                     <button onClick={() => handleEdit(entry)}>Επεξεργασία</button>
-                    <button onClick={() => handleReject(entry.id)}>Διαγραφή</button>
                   </div>
                 )}
               </li>
             ))}
           </ul>
-        </>
-      )}
-
-      <button onClick={() => navigate('/')}>Πίσω στην Αρχική</button>
+        )}
+        <hr />
+        <button onClick={() => navigate('/')}>Πίσω στην Αρχική</button>
+      </div>
     </div>
   );
 }

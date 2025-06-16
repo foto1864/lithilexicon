@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { db } from '../utils/firebase';
-import LetterNav from './LetterNav';
+import '..//styles/Layout.css';
 
 export default function LetterPage() {
   const { letter } = useParams();
@@ -38,24 +38,26 @@ export default function LetterPage() {
       .trim();
 
   return (
-    <div>
-      <h2>Λέξεις/Φράσεις από «{letter}»:</h2>
+    <div className="section">
+      <div className="section-content">
+        <h2>Λέξεις/Φράσεις από «{letter}»:</h2>
 
-      {loading ? (
-        <p>Φόρτωση...</p>
-      ) : entries.length === 0 ? (
-        <p>Ακόμα δεν υπάρχουν καταχωρήσεις για αυτό το γράμμα.</p>
-      ) : (
-        <ul>
-          {entries.map(entry => (
-            <li key={entry.id}>
-              <Link to={`/entry/${entry.id}`}>
-                <strong>{entry.phrase}</strong>
-              </Link>: {entry.meaning} — uploaded by {entry.uploadedByUsername || entry.uploadedBy}
-            </li>
-          ))}
-        </ul>
-      )}
+        {loading ? (
+          <p>Φόρτωση...</p>
+        ) : entries.length === 0 ? (
+          <p>Ακόμα δεν υπάρχουν καταχωρήσεις για αυτό το γράμμα.</p>
+        ) : (
+          <ul>
+            {entries.map(entry => (
+              <li key={entry.id}>
+                <Link to={`/entry/${entry.id}`}>
+                  <strong>{entry.phrase}</strong>
+                </Link>: {entry.meaning} — uploaded by {entry.uploadedByUsername || entry.uploadedBy}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }

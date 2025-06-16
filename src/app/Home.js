@@ -37,50 +37,59 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Ληθιλεξικόν - Αρχική</h1>
+      <div className="section" style={{ backgroundColor: '' }}>
+        <div className="section-content">
+          <h1 className='site-title'>Ληθιλεξικόν - Αρχική</h1>
 
-      {loading ? (
-        <p>Loading user...</p>
-      ) : user ? (
-        <p>Καλωσήρθες, <strong>{username}</strong> — Ρόλος: <strong>{role}</strong></p>
-      ) : (
-        <p>Δεν έχετε συνδεθεί.</p>
-      )}
+          {loading ? (
+            <p>Loading user...</p>
+          ) : user ? (
+            <p>Καλωσήρθες, <strong>{username}</strong> — Ρόλος: <strong>{role}</strong></p>
+          ) : (
+            <p>Δεν έχετε συνδεθεί.</p>
+          )}
 
-      <nav>
-        <ul style={{listStyle: 'none', padding: 0}}> 
-          {user && <li><button onClick={() => { signOut(auth).then(() => navigate('/')); }}>Αποσύνδεση</button></li>}
-          {!user && <li><button onClick={ () => navigate('/login')}>Σύνδεση</button></li>}
-        </ul>
-      </nav>
-
-      <hr />
-
-      <div>
-        <p><strong>Καλωσήρθατε στο Ληθιλεξικόν!</strong></p>
-        <p>Σκοπός του Ληθιλεξικού είναι να φέρει ξανά στο φως ξεχασμένες ελληνικές λέξεις και φράσεις.
-          Για τους νεότερους, αποτελεί μια ευκαιρία να γνωρίσουν εκφράσεις που δεν έχουν ξανακούσει, 
-          προσφέροντας μια γεύση από την παλαιότερη μορφή της γλώσσας μας.
-        </p>
-        <p>Μπορείτε να περιηγηθείτε στο περιεχόμενο του λεξικού επιλέγοντας το αρχικό γράμμα κάθε λέξης,
-          ενώ σας ενθαρρύνουμε να συμβάλετε προσθέτοντας τις δικές σας φράσεις και λέξεις, βοηθώντας έτσι 
-          να εμπλουτίσουμε μαζί αυτή τη μοναδική συλλογή.
-        </p>
-        <p>
-          <button onClick={ () => navigate('/submit')}>Υποβάλετε μια φράση!</button>
-        </p>
+          <nav>
+            <ul style={{listStyle: 'none', padding: 0}}> 
+              {user && <li><button onClick={() => { signOut(auth).then(() => navigate('/')); }}>Αποσύνδεση</button></li>}
+              {!user && <li><button onClick={ () => navigate('/login')}>Σύνδεση</button></li>}
+            </ul>
+          </nav>
+          <hr />
+        </div>
       </div>
 
-      <hr />
+      <div className="section">
+        <div className="section-content">
+          <p><strong>Καλωσήρθατε στο Ληθιλεξικόν!</strong></p>
+          <p>Σκοπός του Ληθιλεξικού είναι να φέρει ξανά στο φως ξεχασμένες ελληνικές λέξεις και φράσεις.
+            Για τους νεότερους, αποτελεί μια ευκαιρία να γνωρίσουν εκφράσεις που δεν έχουν ξανακούσει, 
+            προσφέροντας μια γεύση από την παλαιότερη μορφή της γλώσσας μας.
+          </p>
+          <p>Μπορείτε να περιηγηθείτε στο περιεχόμενο του λεξικού επιλέγοντας το αρχικό γράμμα κάθε λέξης,
+            ενώ σας ενθαρρύνουμε να συμβάλετε προσθέτοντας τις δικές σας φράσεις και λέξεις, βοηθώντας έτσι 
+            να εμπλουτίσουμε μαζί αυτή τη μοναδική συλλογή.
+          </p>
+          <p>
+            <button onClick={ () => navigate('/submit')}>Υποβάλετε μια φράση!</button>
+          </p>
+          <hr />
+        </div>
+      </div>
 
-      <h2>Επιλεγμένες Φράσεις</h2>
-      <ul>
-        {featured.map((entry, index) => (
-          <li key={index}>
-            <strong>{entry.phrase}</strong>: {entry.meaning} — uploaded by {entry.uploadedBy}
-          </li>
-        ))}
-      </ul>
+      <div className="section">
+        <div className="section-content">
+          <h2>Επιλεγμένες Φράσεις</h2>
+          <ul>
+            {featured.map((entry, index) => (
+              <li key={index}>
+                <strong>{entry.phrase}</strong>: {entry.meaning} — uploaded by {entry.uploadedBy}
+              </li>
+            ))}
+          </ul>
+        </div>
+        </div>
+  
     </div>
   );
 }

@@ -1,48 +1,108 @@
+/* Βασικό section layout */
+.section {
+  width: 100%;
+  padding: 30px 0;
+}
+
+.section-content {
+  width: 60%;
+  margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .section-content {
+    width: 75%;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-content {
+    width: 95%;
+  }
+}
+
+/* Τίτλος και κείμενο */
+.submit-div h2 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.submit-div p {
+  max-width: 600px;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+/* Φόρμα υποβολής */
 .submit-form {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  row-gap: 20px;
-  column-gap: 10px;
+  gap: 10px 20px;
+  margin-top: 20px;
+  align-items: center;
 }
 
 .submit-form input {
-  width: 100%;
-  max-width: 300px;
-  height: 30px;    
+  flex: 1;
+  min-width: 250px;
+  height: 35px;
+  padding: 5px 10px;
   font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
   margin-right: 10px;
 }
 
-.submit-preview {
-  padding: 20px;
-}
-
+/* Κουμπί Προεπισκόπησης */
 .preview-button {
-  margin-top: 10px;
+  background-color: rgb(46, 97, 145);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 7px 15px;
   font-size: 16px;
+  font-weight: 500;
 }
 
+.preview-button:hover {
+  background-color: rgb(36, 78, 117);
+  cursor: pointer;
+}
+
+/* Μήνυμα λάθους */
 .warning {
   background: #ffe0e0;
   border: 1px solid red;
   padding: 10px;
-  margin-bottom: 15px;
+  margin-top: 15px;
+  border-radius: 5px;
 }
 
+/* Preview section */
 .preview {
-  margin-bottom: 20px;
+  margin-top: 30px;
+}
+
+.actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
 }
 
 .actions button {
-  margin-right: 10px;
+  background-color: #ccc;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 5px;
+  font-size: 15px;
 }
 
-.submit-div p {
-  width: 100%;
-  max-width: 600px;
+.actions button:hover {
+  background-color: #bbb;
+  cursor: pointer;
 }
 
+/* Responsive tweaks */
 @media (max-width: 768px) {
   .submit-form {
     flex-direction: column;
@@ -50,21 +110,11 @@
   }
 
   .submit-form input {
-    width: 100%;
-    margin-right: 0;
-  }
-
-  .submit-div p {
-    width: 100%;
+    width: 95%;
   }
 
   .actions {
-    display: flex;
     flex-direction: column;
-    gap: 10px;
-  }
-
-  .actions button {
-    margin-right: 0;
+    align-items: stretch;
   }
 }

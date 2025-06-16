@@ -17,7 +17,7 @@ export default function Layout() {
   return (
     <div className='layout-container'>
        <header className='custom-header'>
-        <h2>Ληθιλεξικόν</h2>
+        <h1>Ληθιλεξικόν</h1>
 
         <SearchBar />
 
@@ -31,7 +31,6 @@ export default function Layout() {
 
         <LetterNav />
       </header>
-
 
       <main>
         <Outlet />

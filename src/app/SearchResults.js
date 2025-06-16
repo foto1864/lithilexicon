@@ -47,28 +47,29 @@ export default function SearchResults() {
       .charAt(0);
 
   return (
-    <div>
-      <LetterNav />
-      <h2>Αποτελέσματα για: «{searchQuery}»</h2>
+    <div className="section">
+      <div className="section-content"> 
+        <h2>Αποτελέσματα για: «{searchQuery}»</h2>
 
-      {loading ? (
-        <p>Φόρτωση...</p>
-      ) : Object.keys(results).length === 0 ? (
-        <p>Δεν βρέθηκαν αποτελέσματα.</p>
-      ) : (
-        Object.keys(results).sort().map(letter => (
-          <div key={letter}>
-            <h3>{letter}</h3>
-            <ul>
-              {results[letter].map(entry => (
-                <li key={entry.id}>
-                  <strong>{entry.phrase}</strong>: {entry.meaning} — uploaded by {entry.uploadedByUsername || entry.uploadedBy}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      )}
+        {loading ? (
+          <p>Φόρτωση...</p>
+        ) : Object.keys(results).length === 0 ? (
+          <p>Δεν βρέθηκαν αποτελέσματα.</p>
+        ) : (
+          Object.keys(results).sort().map(letter => (
+            <div key={letter}>
+              <h3>{letter}</h3>
+              <ul>
+                {results[letter].map(entry => (
+                  <li key={entry.id}>
+                    <strong>{entry.phrase}</strong>: {entry.meaning} — uploaded by {entry.uploadedByUsername || entry.uploadedBy}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }
