@@ -28,31 +28,33 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <h2>Σύνδεση</h2>
-      <form onSubmit={handleLogin}>
-        <input type="email" placeholder="Email" onChange={e => setEmail(e.target.value)} required /> <br />
-        <input
-          type={showPassword ? 'text' : 'password'}
-          placeholder="Password"
-          onChange={e => setPassword(e.target.value)}
-          required
-        /> <br />
-        <label>
-          <input type="checkbox" onChange={() => setShowPassword(prev => !prev)} /> Εμφάνιση Κωδικού
-        </label>
-        <br /><br />
+    <div className='section'>
+      <div className='section-content'>
+        <h2>Σύνδεση</h2>
+        <form onSubmit={handleLogin}>
+          <input type="email" placeholder="Email" onChange={e => setEmail(e.target.value)} required /> <br />
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Password"
+            onChange={e => setPassword(e.target.value)}
+            required
+          /> <br />
+          <label>
+            <input type="checkbox" onChange={() => setShowPassword(prev => !prev)} /> Εμφάνιση Κωδικού
+          </label>
+          <br /><br />
 
-        <p><a href="/forgot-password">Ξεχάσατε τον κωδικό σας;</a></p>
+          <p><a href="/forgot-password">Ξεχάσατε τον κωδικό σας;</a></p>
 
-        <button type="submit">Σύνδεση</button>
-      </form>
+          <button type="submit">Σύνδεση</button>
+        </form>
 
-      <p>Δεν έχετε λογαριασμό; <br></br>
-        {<Link to="/register">Εγγραφείτε τώρα!</Link>}
-      </p>
+        <p>Δεν έχετε λογαριασμό; <br></br>
+          {<Link to="/register">Εγγραφείτε τώρα!</Link>}
+        </p>
 
-      <p>{message}</p>
+        <p>{message}</p>
+      </div>
     </div>
   );
 }

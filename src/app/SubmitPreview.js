@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { collection, query, where, getDocs, addDoc, Timestamp } from 'firebase/firestore';
+import { collection, getDocs, addDoc, Timestamp } from 'firebase/firestore';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 // Import from 'utils'
@@ -34,7 +34,7 @@ export default function SubmitPreview() {
   const tokenize = (text) => {
     return text
       .toLowerCase()
-      .replace(/[.,;:"'«»!?()\-]/g, '')
+      .replace(/[.,;:"'«»!?()]/g, '')
       .split(/\s+/)
       .filter(word => word && !IGNORED_WORDS.includes(word));
   };
@@ -44,7 +44,6 @@ export default function SubmitPreview() {
     const setB = new Set(b);
     return [...setA].filter(x => setB.has(x)).length;
   };
-
   useEffect(() => {
     const fetchSimilarEntries = async () => {
       const snapshot = await getDocs(collection(db, 'entries'));
@@ -91,35 +90,37 @@ export default function SubmitPreview() {
   };
 
   return (
-    <div className="submit-preview">
-      <h2>Επιβεβαίωση Υποβολής</h2>
+    <div className='section'>
+      <div className="section-content submit-preview">
+        <h2>Επιβεβαίωση Υποβολής</h2>
 
-      {similarEntries.length > 0 && (
-        <div className="warning">
-          <p>⚠️ Βρέθηκαν παρόμοιες φράσεις στο λεξικό:</p>
-          <ul>
-            {similarEntries.map((entry, index) => (
-              <li key={index}>
-                <strong>{entry.phrase}</strong>: {entry.meaning}
-              </li>
-            ))}
-          </ul>
+        {similarEntries.length > 0 && (
+          <div className="warning">
+            <p>⚠️ Βρέθηκαν παρόμοιες φράσεις στο λεξικό:</p>
+            <ul>
+              {similarEntries.map((entry, index) => (
+                <li key={index}>
+                  <strong>{entry.phrase}</strong>: {entry.meaning}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className="preview">
+          <h3>Φράση:</h3>
+          <p>{phrase}</p>
+          <h3>Σημασία:</h3>
+          <p>{meaning}</p>
         </div>
-      )}
 
-      <div className="preview">
-        <h3>Φράση:</h3>
-        <p>{phrase}</p>
-        <h3>Σημασία:</h3>
-        <p>{meaning}</p>
-      </div>
-
-      <div className="actions">
-        <button onClick={() => navigate('/submit', { state: { phrase, meaning } })}>🔙 Επιστροφή για Επεξεργασία</button>
-        <button onClick={() => navigate('/')}>❌ Ακύρωση</button>
-        <button onClick={handleFinalSubmit} disabled={submitting}>
-          ✅ Οριστική Υποβολή
-        </button>
+        <div className="actions">
+          <button onClick={() => navigate('/submit', { state: { phrase, meaning } })}>🔙 Επιστροφή για Επεξεργασία</button>
+          <button onClick={() => navigate('/')}>❌ Ακύρωση</button>
+          <button onClick={handleFinalSubmit} disabled={submitting}>
+            ✅ Οριστική Υποβολή
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -43,33 +43,35 @@ export default function Register() {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleRegister}>
-        <input type="text" placeholder="Username" onChange={e => setUsername(e.target.value)} required /><br></br>
-        <input type="email" placeholder="Email" onChange={e => setEmail(e.target.value)} required /><br></br>
-        <input
-          type={showPassword ? 'text' : 'password'}
-          placeholder="Password"
-          onChange={e => setPassword(e.target.value)}
-          required
-        /><br></br>
-        <input
-          type={showPassword ? 'text' : 'password'}
-          placeholder="Confirm Password"
-          onChange={e => setConfirmPassword(e.target.value)}
-          required
-        />
-        <br></br>
-        <label>
-          <input type="checkbox" onChange={() => setShowPassword(prev => !prev)} />
-          Show Password
-        </label>
-        <br></br>
-        <br />
-        <button type="submit">Register</button>
-      </form>
-      <p>{message}</p>
+    <div className='section'>
+      <div className='section-content'>
+        <h2>Register</h2>
+        <form onSubmit={handleRegister}>
+          <input type="text" placeholder="Username" onChange={e => setUsername(e.target.value)} required /><br></br>
+          <input type="email" placeholder="Email" onChange={e => setEmail(e.target.value)} required /><br></br>
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Password"
+            onChange={e => setPassword(e.target.value)}
+            required
+          /><br></br>
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Confirm Password"
+            onChange={e => setConfirmPassword(e.target.value)}
+            required
+          />
+          <br></br>
+          <label>
+            <input type="checkbox" onChange={() => setShowPassword(prev => !prev)} />
+            Show Password
+          </label>
+          <br></br>
+          <br />
+          <button type="submit">Register</button>
+        </form>
+        <p>{message}</p>
+      </div>
     </div>
   );
 }

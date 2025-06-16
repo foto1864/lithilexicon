@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { db } from '../utils/firebase';
-import LetterNav from './LetterNav';
 
 export default function SearchResults() {
   const [params] = useSearchParams();

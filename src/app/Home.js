@@ -51,8 +51,8 @@ export default function Home() {
 
           <nav>
             <ul style={{listStyle: 'none', padding: 0}}> 
-              {user && <li><button onClick={() => { signOut(auth).then(() => navigate('/')); }}>Αποσύνδεση</button></li>}
-              {!user && <li><button onClick={ () => navigate('/login')}>Σύνδεση</button></li>}
+              {user && <li><button onClick={() => { signOut(auth).then(() => navigate('/')); }}>⬅ Αποσύνδεση</button></li>}
+              {!user && <li><button onClick={ () => navigate('/login')}>Σύνδεση ➜</button></li>}
             </ul>
           </nav>
           <hr />

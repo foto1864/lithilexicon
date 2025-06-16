@@ -19,18 +19,20 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div>
-      <h2>Reset Password</h2>
-      <form onSubmit={handleReset}>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          onChange={e => setEmail(e.target.value)}
-          required
-        />
-        <button type="submit">Send Reset Email</button>
-      </form>
-      <p>{message}</p>
+    <div className='section'>
+      <div className='section-content'> 
+        <h2>Reset Password</h2>
+        <form onSubmit={handleReset}>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            onChange={e => setEmail(e.target.value)}
+            required
+          />
+          <button type="submit">Send Reset Email</button>
+        </form>
+        <p>{message}</p>
+      </div>
     </div>
   );
 }
