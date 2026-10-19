@@ -1,98 +1,249 @@
-/*CSS File for Layout.js*/
-
-main {
-  padding-top: 50px;
-  padding-bottom: 50px;
-}
-
-nav a {
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.letter-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  padding: 10px;
-  padding-top: 20px;
-  justify-content: center;
-}
-
-.letter-nav a {
-  text-decoration: none;
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  margin-left: 5px;
-  margin-right: 5px;
-  border-radius: 6px;
-  color: #333;
-  background-color: #f0f0f0;
-  font-weight: bold;
-}
-
-.letter-nav a:hover {
-  background-color: #ddd;
-}
-
 .layout-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column
 }
-
 .custom-header {
-  background-color: #eee;
-  padding: 10px 0 25px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+  background:var(--paper)
 }
-
-.layout-container footer {
-  background-color: #eee;
-  padding: 10px;
-  text-align: center;
-  box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.3);
+.header-inner {
+  max-width:1280px;
+  margin:auto;
+  padding:26px 48px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:24px
 }
-
-/* MAIN: το κεντρικό section της σελίδας */
+.brand {
+  display:flex;
+  align-items:center;
+  gap:13px;
+  text-decoration:none;
+  font-family:var(--serif);
+  font-size:32px;
+  line-height:1.2
+}
+.brand-mark {
+  display:grid;
+  place-items:center;
+  background:var(--accent);
+  color:#fff0db;
+  width:46px;
+  height:49px;
+  border-radius:4px;
+  font-style:italic;
+  font-size:43px
+}
+.brand small {
+  display:block;
+  font-family:Arial,sans-serif;
+  font-size:13px;
+  letter-spacing:1.5px;
+  margin-top:7px;
+  color:var(--muted)
+}
+.main-nav {
+  display:flex;
+  align-items:center;
+  gap:26px;
+  flex-wrap:wrap;
+  font-size:16px
+}
+.main-nav a {
+  text-decoration:none
+}
+.main-nav a.active {
+  color:var(--accent);
+  text-decoration:underline;
+  text-decoration-thickness:2px;
+  text-underline-offset:8px
+}
+.main-nav .nav-contribute {
+  border:1px solid #cdb69b;
+  border-radius:5px;
+  padding:10px 16px
+}
+.main-nav a:hover {
+  color:#8c6234
+}
+.discovery-bar {
+  border-block:1px solid var(--line)
+}
+.discovery-inner {
+  max-width:1280px;
+  padding:15px 48px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap
+}
+.browse-label {
+  font-size:13px;
+  line-height:1.4;
+  max-width:none;
+  color:var(--muted)
+}
+.letter-nav {
+  display:flex;
+  flex:1 0 100%;
+  justify-content:space-between;
+  gap:2px
+}
+.letter-nav a {
+  display:grid;
+  place-items:center;
+  text-decoration:none;
+  width:32px;
+  height:38px;
+  font-size:15px;
+  border-radius:4px
+}
+.letter-nav a:hover,.letter-nav a.active {
+  background:var(--accent);
+  color:white
+}
 .layout-container main {
-  flex: 1;
-  width: 100%;
+  flex:1;
+  width:100%
 }
-
-/* Full-width section (π.χ. κάθε div στο main) */
 .section {
-  width: 100%;
-  padding: 30px 0;
+  width:100%;
+  padding:44px 24px
 }
-
-/* Το actual περιεχόμενο μέσα στη section */
 .section-content {
-  width: 60%;
-  margin: 0 auto;
+  width:100%;
+  max-width:950px;
+  margin:0 auto
+}
+.section-content h2 {
+  font-family:var(--serif);
+  font-size:38px
+}
+.section-content>form {
+  max-width:540px;
+  background:#fff;
+  padding:28px;
+  border:1px solid var(--line);
+  border-radius:10px
+}
+.section-content>form input:not([type=checkbox]) {
+  width:100%;
+  margin-bottom:14px
+}
+.section-content li {
+  padding:14px 0;
+  border-bottom:1px solid var(--line)
+}
+.layout-container footer {
+  border-top:1px solid var(--line);
+  margin-top:36px
+}
+.footer-inner {
+  max-width:1280px;
+  padding:30px 48px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  margin:auto;
+  font-size:14px;
+  color:var(--muted)
+}
+.footer-brand {
+  font-family:var(--serif);
+  font-size:24px;
+  text-decoration:none;
+  color:var(--ink)
+}
+.footer-brand span {
+  display:block;
+  font:14px Arial,sans-serif;
+  color:var(--muted);
+  margin-top:5px
+}
+.footer-inner p {
+  margin:0
+}
+.footer-inner>a:last-child {
+  text-decoration:none
+}
+.skip-link {
+  position:absolute;
+  left:20px;
+  top:-100px;
+  background:white;
+  padding:12px;
+  z-index:10
+}
+.skip-link:focus {
+  top:12px
+}
+@media(max-width:1100px) {
+  .discovery-inner {
+  flex-wrap:wrap;
+  gap:12px
+}
+.letter-nav {
+  min-width:0
+}
+.browse-label {
+  max-width:none
+}
+.discovery-inner .search-bar {
+  flex:1
+}
+.letter-nav {
+  flex-basis:100%
 }
 
-/* Responsive breakpoints */
-@media (max-width: 1024px) {
-  .section-content {
-    width: 75%;
-  }
+}
+@media(max-width:650px) {
+  .header-inner {
+  padding:20px;
+  flex-wrap:wrap;
+  gap:20px
+}
+.brand {
+  font-size:29px
+}
+.main-nav {
+  width:100%;
+  gap:20px;
+  justify-content:space-between;
+  font-size:15px;
+  flex-wrap:wrap
+}
+.main-nav .nav-contribute {
+  padding:8px 10px
+}
+.discovery-inner {
+  padding:14px 20px
+}
+.browse-label {
+  display:none
+}
+.letter-nav {
+  min-width:0;
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:4px
+}
+.letter-nav a {
+  width:100%;
+  height:34px
+}
+.footer-inner {
+  padding:26px 20px;
+  flex-wrap:wrap
+}
+.section {
+  padding:30px 20px
+}
+.section-content>form {
+  padding:20px
 }
 
-@media (max-width: 768px) {
-  .section-content {
-    width: 95%;
-  }
-
-  .custom-header {
-    padding: 15px 0;
-    text-align: center;
-  }
-
-  .layout-container footer {
-    padding: 15px 10px;
-  }
 }

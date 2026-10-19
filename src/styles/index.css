@@ -1,14 +1,99 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-body {
-  margin: 0;
-  font-family: 'Inter', Arial, Verdana, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  --paper:#faf5ec;
+  --ink:#493326;
+  --muted:#796454;
+  --accent:#785037;
+  --line:#e5d6c4;
+  --serif:Georgia,'Times New Roman',serif
 }
 
+* {
+  box-sizing:border-box
+}
+html {
+  scroll-behavior:smooth;
+  scroll-padding-top:24px
+}
+body {
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:18px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased
+}
+a {
+  color:inherit;
+  text-underline-offset:4px
+}
+button,input,textarea,select {
+  font:inherit
+}
+button,.button {
+  cursor:pointer
+}
+button,.button.primary {
+  background:var(--accent);
+  border:1px solid var(--accent);
+  color:#fff;
+  padding:12px 20px;
+  border-radius:6px;
+  font-weight:600
+}
+button:hover,.button.primary:hover {
+  background:#5d3925
+}
+a,button,input,textarea {
+  transition:background-color .18s,color .18s,border-color .18s
+}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible {
+  outline:3px solid #b28142;
+  outline-offset:4px
+}
+input:not([type=checkbox]),textarea,select {
+  max-width:100%;
+  border:1px solid #d8c3ad;
+  border-radius:6px;
+  padding:11px 14px;
+  background:#fff;
+  color:var(--ink)
+}
+textarea {
+  min-height:120px
+}
+h1,h2,h3,p {
+  margin-top:0
+}
+h1,h2,h3 {
+  line-height:1.2
+}
+main:focus {
+  outline:none
+}
+::selection {
+  background:#ead1ae
+}
+.button {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:24px;
+  text-decoration:none;
+  white-space:nowrap
+}
+.eyebrow {
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:1.8px;
+  color:var(--muted)
+}
+@media(prefers-reduced-motion:reduce) {
+  html {
+  scroll-behavior:auto
+}
+* {
+  transition:none!important
+}
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }

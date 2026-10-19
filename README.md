@@ -4,6 +4,21 @@
 
 Ληθιλεξικόν is an online dictionary-like platform built with React and Firebase that aims to collect and preserve old, rare, or forgotten Greek words and phrases. Users can explore the collection, submit their own entries, and engage with the growing database of linguistic treasures.
 
+## Local development
+
+Use Node.js 20 and install the locked dependencies:
+
+```bash
+npm ci
+npm start
+```
+
+Open http://localhost:3000. Stop the server with Ctrl+C.
+
+The local file `src/utils/firebase.js` is ignored by Git and must export `auth`
+and `db` using the existing Firebase project configuration. This checkout has
+been configured locally. Authentication and dictionary data require internet access.
+
 ## Core Features
 
 1. User Accounts: Visitors can create an account to track and manage their submissions.
@@ -14,7 +29,7 @@
 
 ## Tech Stack
 
-1. Frontend: React (Vite)
+1. Frontend: React (Create React App)
 2. Backend & Auth: Firebase (Auth, Firestore)
 3. PDF Generation (for ESG module): pdf-lib and custom utilities
 4. Hosting: Firebase Hosting

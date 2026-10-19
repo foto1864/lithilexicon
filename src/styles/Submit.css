@@ -1,26 +1,3 @@
-/* Βασικό section layout */
-.section {
-  width: 100%;
-  padding: 30px 0;
-}
-
-.section-content {
-  width: 60%;
-  margin: 0 auto;
-}
-
-@media (max-width: 1024px) {
-  .section-content {
-    width: 75%;
-  }
-}
-
-@media (max-width: 768px) {
-  .section-content {
-    width: 95%;
-  }
-}
-
 /* Τίτλος και κείμενο */
 .submit-div h2 {
   font-size: 26px;
@@ -44,7 +21,7 @@
 
 .submit-form input {
   flex: 1;
-  min-width: 250px;
+  min-width: 0;
   height: 35px;
   padding: 5px 10px;
   font-size: 16px;
@@ -55,7 +32,7 @@
 
 /* Κουμπί Προεπισκόπησης */
 .preview-button {
-  background-color: rgb(46, 97, 145);
+  background-color: var(--accent);
   color: white;
   border: none;
   border-radius: 5px;
@@ -65,7 +42,7 @@
 }
 
 .preview-button:hover {
-  background-color: rgb(36, 78, 117);
+  background-color: #5d3925;
   cursor: pointer;
 }
 
@@ -110,7 +87,7 @@
   }
 
   .submit-form input {
-    width: 95%;
+    width: 100%;
   }
 
   .actions {

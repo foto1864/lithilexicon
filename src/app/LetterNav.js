@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import '../styles/Layout.css';
 
 const GREEK_ALPHABET = [
@@ -10,12 +10,12 @@ const GREEK_ALPHABET = [
 
 export default function LetterNav() {
   return (
-    <div className="letter-nav">
+    <nav className="letter-nav" aria-label="Αλφαβητικό ευρετήριο">
       {GREEK_ALPHABET.map(letter => (
-        <Link key={letter} to={`/letter/${letter}`}>
+        <NavLink key={letter} to={`/letter/${letter}`}>
           {letter}
-        </Link>
+        </NavLink>
       ))}
-    </div>
+    </nav>
   );
 }
