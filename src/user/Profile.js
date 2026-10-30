@@ -10,6 +10,7 @@ import { useUser } from '..//user/UserContext';
 
 // Import from 'utils'
 import { db, auth } from '..//utils/firebase';
+import { entryErrorMessage } from '../utils/entries';
 
 // Import styles
 import '../styles/Layout.css';
@@ -17,20 +18,28 @@ import '../styles/Layout.css';
 export default function Profile() {
   const { user, role, loading, username } = useUser();
   const [entries, setEntries] = useState([]);
+  const [entriesLoading, setEntriesLoading] = useState(false);
+  const [entriesError, setEntriesError] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
   const [reason, setReason] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
+    let active = true;
+    setEntries([]);
+    setEntriesError('');
+    setEntriesLoading(Boolean(user));
     const fetchUserEntries = async () => {
       if (!user) return;
       const q = query(collection(db, 'entries'), where('uploadedBy', '==', user.email));
       const snapshot = await getDocs(q);
       const results = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setEntries(results);
+      if (active) setEntries(results);
     };
-    fetchUserEntries();
+    fetchUserEntries().catch(err => { if (active) setEntriesError(entryErrorMessage(err)); })
+      .finally(() => { if (active) setEntriesLoading(false); });
+    return () => { active = false; };
   }, [user]);
 
   const handleDeleteAccount = async () => {
@@ -66,7 +75,7 @@ export default function Profile() {
 
         <hr />
         <h3>Φράσεις που έχω ανεβάσει</h3>
-        {entries.length === 0 ? (
+        {entriesError ? <p role="alert">{entriesError}</p> : entriesLoading ? <p>Φόρτωση φράσεων...</p> : entries.length === 0 ? (
           <div><p>Δεν έχετε ανεβάσει καμία φράση ακόμα.</p>
           <p><button onClick={ () => navigate('/submit')}>Ανεβάστε τώρα μια!</button></p></div>
         ) : (

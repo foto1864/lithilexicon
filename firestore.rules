@@ -1,19 +1,53 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
-    match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2025, 6, 22);
+    function signedIn() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return signedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    match /users/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['username', 'email', 'role'])
+        && request.resource.data.username is string
+        && request.resource.data.username.size() > 0
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.role == 'subscriber';
+      allow update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['username'])
+        && request.resource.data.username is string
+        && request.resource.data.username.size() > 0;
+      allow delete: if signedIn() && request.auth.uid == uid;
+    }
+    match /entries/{id} {
+      allow read: if resource.data.approved == true || isAdmin()
+        || (signedIn() && resource.data.uploadedBy == request.auth.token.email);
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly([
+          'phrase', 'meaning', 'uploadedBy', 'uploadedByUsername', 'approved', 'timestamp'
+        ])
+        && request.resource.data.phrase is string
+        && request.resource.data.phrase.size() > 0
+        && request.resource.data.meaning is string
+        && request.resource.data.meaning.size() > 0
+        && request.resource.data.uploadedBy == request.auth.token.email
+        && request.resource.data.uploadedByUsername == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.username
+        && request.resource.data.timestamp is timestamp
+        && request.resource.data.approved is bool
+        && (request.resource.data.approved == false || isAdmin());
+      allow update, delete: if isAdmin();
+    }
+    match /deletedAccounts/{id} {
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['uid', 'email', 'reason', 'deletedAt'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.reason is string
+        && request.resource.data.deletedAt is timestamp;
+      allow read, delete: if isAdmin();
     }
   }
 }

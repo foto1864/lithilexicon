@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
-import { db } from '../utils/firebase';
+import { Link } from 'react-router-dom';
+import { getApprovedEntries, normalizePhrase, entryErrorMessage } from '../utils/entries';
 
 export default function SearchResults() {
   const [params] = useSearchParams();
@@ -10,47 +10,33 @@ export default function SearchResults() {
 
   const searchQuery = params.get('query')?.toLowerCase().trim() || '';
 
+  const [error, setError] = useState('');
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
-    const fetchAndFilter = async () => {
-      const q = query(
-        collection(db, 'entries'),
-        where('approved', '==', true),
-        orderBy('phrase')
-      );
-      const snapshot = await getDocs(q);
-      const all = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-      const filtered = all.filter(entry =>
-        entry.phrase.toLowerCase().includes(searchQuery)
-      );
-
+    let active = true;
+    setLoading(true);
+    setError('');
+    getApprovedEntries().then(all => {
       const grouped = {};
-      filtered.forEach(entry => {
-        const letter = normalize(entry.phrase.charAt(0));
-        if (!grouped[letter]) grouped[letter] = [];
-        grouped[letter].push(entry);
-      });
-
-      setResults(grouped);
-      setLoading(false);
-    };
-
-    fetchAndFilter();
-  }, [searchQuery]);
-
-  const normalize = (ch) =>
-    ch
-      .toUpperCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // remove tonos
-      .charAt(0);
+      all.filter(entry => normalizePhrase(entry.phrase).includes(normalizePhrase(searchQuery)))
+        .forEach(entry => {
+          const letter = normalizePhrase(entry.phrase).charAt(0);
+          if (!grouped[letter]) grouped[letter] = [];
+          grouped[letter].push(entry);
+        });
+      if (active) setResults(grouped);
+    }).catch(err => {
+      if (active) setError(entryErrorMessage(err));
+    }).finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, [searchQuery, attempt]);
 
   return (
     <div className="section">
       <div className="section-content"> 
         <h2>Αποτελέσματα για: «{searchQuery}»</h2>
 
-        {loading ? (
+        {error ? (<div role="alert"><p>{error}</p><button onClick={() => setAttempt(value => value + 1)}>Δοκιμή ξανά</button></div>) : loading ? (
           <p>Φόρτωση...</p>
         ) : Object.keys(results).length === 0 ? (
           <p>Δεν βρέθηκαν αποτελέσματα.</p>
@@ -61,7 +47,7 @@ export default function SearchResults() {
               <ul>
                 {results[letter].map(entry => (
                   <li key={entry.id}>
-                    <strong>{entry.phrase}</strong>: {entry.meaning} — uploaded by {entry.uploadedByUsername || entry.uploadedBy}
+                    <Link to={`/entry/${entry.id}`}><strong>{entry.phrase}</strong></Link>: {entry.meaning} — uploaded by {entry.uploadedByUsername || entry.uploadedBy}
                   </li>
                 ))}
               </ul>

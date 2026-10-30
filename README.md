@@ -47,3 +47,15 @@ The project began as a collaborative effort but faced limited participation. As 
 
 ## Open Source
 This project is now public on GitHub to allow others to follow its development, suggest improvements, and contribute if they’re interested in digital preservation, language, or React/Firebase applications.
+## Firebase checks
+
+Run the authentication regression tests with `CI=true npm test -- --watchAll=false --runInBand`.
+With Firebase CLI and Java 21 installed, run isolated access-rule checks:
+
+```bash
+firebase emulators:exec --only firestore --project demo-lithilexicon --config firebase.emulators.json 'node scripts/test-firestore-rules.cjs'
+```
+
+Public dictionary queries read only approved entries. Members can read their own
+profile and submissions; moderation requires an existing admin profile. New users
+cannot assign themselves admin access. Rules have no time-based expiration.

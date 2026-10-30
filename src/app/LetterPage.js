@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
-import { db } from '../utils/firebase';
+import { getApprovedEntries, normalizePhrase, entryErrorMessage } from '../utils/entries';
 import '..//styles/Layout.css';
 
 export default function LetterPage() {
@@ -9,40 +8,26 @@ export default function LetterPage() {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [error, setError] = useState('');
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
-    const fetchEntries = async () => {
-      const q = query(
-        collection(db, 'entries'),
-        where('approved', '==', true),
-        orderBy('phrase')
-      );
-      const snapshot = await getDocs(q);
-      const results = snapshot.docs
-        .map(doc => ({ id: doc.id, ...doc.data() }))
-        .filter(entry =>
-          normalize(entry.phrase).startsWith(normalize(letter))
-        );
-
-      setEntries(results);
-      setLoading(false);
-    };
-
-    fetchEntries();
-  }, [letter]);
-
-  const normalize = (text) =>
-    text
-      .toUpperCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // αφαιρεί τόνους
-      .trim();
+    let active = true;
+    setLoading(true);
+    setError('');
+    getApprovedEntries().then(all => {
+      if (active) setEntries(all.filter(entry => normalizePhrase(entry.phrase).startsWith(normalizePhrase(letter))));
+    }).catch(err => {
+      if (active) setError(entryErrorMessage(err));
+    }).finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, [letter, attempt]);
 
   return (
     <div className="section">
       <div className="section-content">
         <h2>Λέξεις/Φράσεις από «{letter}»:</h2>
 
-        {loading ? (
+        {error ? (<div role="alert"><p>{error}</p><button onClick={() => setAttempt(value => value + 1)}>Δοκιμή ξανά</button></div>) : loading ? (
           <p>Φόρτωση...</p>
         ) : entries.length === 0 ? (
           <p>Ακόμα δεν υπάρχουν καταχωρήσεις για αυτό το γράμμα.</p>

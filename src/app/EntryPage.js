@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../utils/firebase';
+import { entryErrorMessage } from '../utils/entries';
 import { useUser } from '../user/UserContext';
 import '../styles/EntryPage.css';
 import '../styles/Layout.css';
@@ -13,27 +14,33 @@ export default function EntryPage() {
 
   const [entry, setEntry] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const [editMode, setEditMode] = useState(false);
   const [editPhrase, setEditPhrase] = useState('');
   const [editMeaning, setEditMeaning] = useState('');
 
   useEffect(() => {
+    let active = true;
+    setLoading(true);
+    setEntry(null);
+    setError('');
     const fetchEntry = async () => {
       const docRef = doc(db, 'entries', id);
       const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
+      if (active && docSnap.exists()) {
         const data = { id: docSnap.id, ...docSnap.data() };
         setEntry(data);
         setEditPhrase(data.phrase);
         setEditMeaning(data.meaning);
       }
 
-      setLoading(false);
     };
 
-    fetchEntry();
+    fetchEntry().catch(err => { if (active) setError(entryErrorMessage(err)); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
   }, [id]);
 
   const formatDate = (timestamp) => {
@@ -76,7 +83,7 @@ export default function EntryPage() {
   return (
     <div className="section">
       <div className="section-content"> 
-        {loading ? (
+        {error ? <p role="alert">{error}</p> : loading ? (
             <p>Φόρτωση...</p>
           ) : entry ? (
             <div>

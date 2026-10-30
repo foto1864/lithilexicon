@@ -1,28 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, addDoc, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 // Import from 'utils'
 import { db } from '..//utils/firebase';
+import { getApprovedEntries } from '../utils/entries';
 
 // Import from 'user'
 import { useUser } from '..//user/UserContext';
 
 // Import from 'styles'
 import '..//styles/Submit.css'
-
-export default function SubmitPreview() {
-  const { state } = useLocation();
-  const navigate = useNavigate();
-  const { user, role, username } = useUser();
-
-  const [similarEntries, setSimilarEntries] = useState([]);
-  const [submitting, setSubmitting] = useState(false);
-
-  const phrase = state?.phrase?.trim() || '';
-  const meaning = state?.meaning?.trim() || '';
-
-  // Τον αράπη κι αν τον πλένεις το σαπούνι σου χαλάς: Δεν έχει νόημα να προσπαθείς για κάτι ανώφελο
 
   const IGNORED_WORDS = [
     'και', 'το', 'τη', 'της', 'του', 'τον', 'την', 'σε', 'από', 'με', 'για', 'να', 'που', 'ως', 'πως', 'πιο', 'οι', 'τα',
@@ -44,14 +32,28 @@ export default function SubmitPreview() {
     const setB = new Set(b);
     return [...setA].filter(x => setB.has(x)).length;
   };
+
+export default function SubmitPreview() {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const { user, role, username } = useUser();
+
+  const [similarEntries, setSimilarEntries] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  const phrase = state?.phrase?.trim() || '';
+  const meaning = state?.meaning?.trim() || '';
+
+  // Τον αράπη κι αν τον πλένεις το σαπούνι σου χαλάς: Δεν έχει νόημα να προσπαθείς για κάτι ανώφελο
+
   useEffect(() => {
     const fetchSimilarEntries = async () => {
-      const snapshot = await getDocs(collection(db, 'entries'));
+      const entries = await getApprovedEntries();
       const inputTokens = tokenize(phrase);
       const candidates = [];
 
-      snapshot.forEach(doc => {
-        const data = doc.data();
+      entries.forEach(data => {
         const dbTokens = tokenize(data.phrase);
         const overlap = getOverlapCount(inputTokens, dbTokens);
 
@@ -66,11 +68,12 @@ export default function SubmitPreview() {
       setSimilarEntries(candidates);
     };
 
-    if (phrase) fetchSimilarEntries();
+    if (phrase) fetchSimilarEntries().catch(() => setError('Δεν ήταν δυνατός ο έλεγχος για παρόμοιες φράσεις. Δοκιμάστε ξανά αργότερα.'));
   }, [phrase]);
 
   const handleFinalSubmit = async () => {
-    if (!user || !username) return;
+    if (!user || !username) { setError('Συνδεθείτε και περιμένετε να φορτωθεί το προφίλ σας πριν την υποβολή.'); return; }
+    setError('');
     setSubmitting(true);
 
     try {
@@ -84,7 +87,7 @@ export default function SubmitPreview() {
       });
       navigate('/');
     } catch (err) {
-      console.error("Υποβολή απέτυχε:", err.message);
+      setError('Η υποβολή απέτυχε. Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά.');
       setSubmitting(false);
     }
   };
@@ -93,6 +96,7 @@ export default function SubmitPreview() {
     <div className='section'>
       <div className="section-content submit-preview">
         <h2>Επιβεβαίωση Υποβολής</h2>
+        {error && <p role="alert">{error}</p>}
 
         {similarEntries.length > 0 && (
           <div className="warning">
