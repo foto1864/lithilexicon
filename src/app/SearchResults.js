@@ -47,7 +47,7 @@ export default function SearchResults() {
               <ul>
                 {results[letter].map(entry => (
                   <li key={entry.id}>
-                    <Link to={`/entry/${entry.id}`}><strong>{entry.phrase}</strong></Link>: {entry.meaning} — uploaded by {entry.uploadedByUsername || entry.uploadedBy}
+                    <Link to={`/entry/${entry.id}`}><strong>{entry.phrase}</strong></Link>{entry.meaning?.trim() ? `: ${entry.meaning}` : <> · <Link className="add-meaning-link" to={`/entry/${entry.id}`}>Πρόσθεσε σημασία</Link></>} — {entry.uploadedByUsername || entry.uploadedBy}
                   </li>
                 ))}
               </ul>

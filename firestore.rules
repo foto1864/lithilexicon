@@ -40,6 +40,20 @@ service cloud.firestore {
         && (request.resource.data.approved == false || isAdmin());
       allow update, delete: if isAdmin();
     }
+    match /meaningSuggestions/{id} {
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['entryId', 'phrase', 'meaning', 'uploadedBy', 'uploadedByUsername', 'timestamp'])
+        && request.resource.data.entryId is string
+        && get(/databases/$(database)/documents/entries/$(request.resource.data.entryId)).data.approved == true
+        && request.resource.data.phrase == get(/databases/$(database)/documents/entries/$(request.resource.data.entryId)).data.phrase
+        && request.resource.data.meaning is string
+        && request.resource.data.meaning.size() > 0
+        && request.resource.data.meaning.size() <= 5000
+        && request.resource.data.uploadedBy == request.auth.token.email
+        && request.resource.data.uploadedByUsername == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.username
+        && request.resource.data.timestamp is timestamp;
+      allow read, delete: if isAdmin();
+    }
     match /deletedAccounts/{id} {
       allow create: if signedIn()
         && request.resource.data.keys().hasOnly(['uid', 'email', 'reason', 'deletedAt'])

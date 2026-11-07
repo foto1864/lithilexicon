@@ -5,6 +5,7 @@ import { db } from '../utils/firebase';
 import { entryErrorMessage } from '../utils/entries';
 import { useUser } from '../user/UserContext';
 import '../styles/EntryPage.css';
+import MeaningContribution from './MeaningContribution';
 import '../styles/Layout.css';
 
 export default function EntryPage() {
@@ -33,7 +34,7 @@ export default function EntryPage() {
         const data = { id: docSnap.id, ...docSnap.data() };
         setEntry(data);
         setEditPhrase(data.phrase);
-        setEditMeaning(data.meaning);
+        setEditMeaning(data.meaning || '');
       }
 
     };
@@ -98,7 +99,8 @@ export default function EntryPage() {
               ) : (
                 <>
                   <h2>{entry.phrase}</h2>
-                  <p><strong>Σημασία:</strong> {entry.meaning}</p>
+                  <p><strong>Σημασία:</strong> {entry.meaning?.trim() || 'Δεν έχει προστεθεί ακόμη.'}</p>
+                  {!entry.meaning?.trim() && <MeaningContribution key={entry.id} entry={entry} />}
                   <p><strong>Ανέβηκε από:</strong> {entry.uploadedByUsername || entry.uploadedBy}</p>
                   <p><strong>Ημερομηνία:</strong> {formatDate(entry.timestamp)}</p>
 

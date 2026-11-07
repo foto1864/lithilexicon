@@ -29,3 +29,8 @@ yarn-error.log*
 firebase-debug*.log
 firestore-debug.log
 ui-debug.log
+
+# Private chat exports and database backup
+chats/chat.txt
+chats/chat.md
+chats/import-backup.json
