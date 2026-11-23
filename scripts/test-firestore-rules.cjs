@@ -47,6 +47,16 @@ async function main() {
   const published = await allowed(':runQuery', null, 'POST', query('approved', true));
   assert.equal(published.filter(row => row.document).length, 1);
   await allowed('/entries/pending', null);
+  const suggestion = { fields: { ...fields({ entryId: 'pending', phrase: 'Άρον άρον', meaning: 'Αμέσως', uploadedBy: 'member@example.test', uploadedByUsername: 'member' }), timestamp: { timestampValue: new Date().toISOString() } } };
+  await denied('/meaningSuggestions/guest', null, 'PATCH', suggestion);
+  await denied('/meaningSuggestions/spoof', 'other', 'PATCH', suggestion);
+  await denied('/meaningSuggestions/invalid', 'member', 'PATCH', { fields: { ...suggestion.fields, entryId: field('missing') } });
+  await allowed('/meaningSuggestions/proposal', 'member', 'PATCH', suggestion);
+  await denied('/meaningSuggestions/proposal', 'other');
+  await allowed('/meaningSuggestions/proposal', 'admin');
+  await denied('/entries/pending?updateMask.fieldPaths=meaning', 'member', 'PATCH', { fields: fields({ meaning: 'Changed' }) });
+  await allowed('/entries/pending?updateMask.fieldPaths=meaning', 'admin', 'PATCH', { fields: fields({ meaning: 'Αμέσως' }) });
+  await allowed('/meaningSuggestions/proposal', 'admin', 'DELETE');
   await denied('/entries/pending', 'member', 'DELETE');
   await allowed('/entries/pending', 'admin', 'DELETE');
   console.log('PASS: public phrases, private profiles, own submissions, admin moderation, and privilege escalation checks');

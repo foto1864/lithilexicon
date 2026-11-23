@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
-  collection, query, getDocs, updateDoc, deleteDoc, doc, orderBy
+  collection, query, getDocs, updateDoc, deleteDoc, doc, orderBy, runTransaction
 } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../utils/firebase';
@@ -16,6 +16,9 @@ export default function AdminDashboard() {
   const [editMeaning, setEditMeaning] = useState('');
 
   const [pendingEntries, setPendingEntries] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [suggestionError, setSuggestionError] = useState('');
+  const [busySuggestion, setBusySuggestion] = useState(null);
   const [ , setApprovedEntries ] = useState([]);
 
   const entryRefs = useRef({}); // κρατάει DOM refs για κάθε entry
@@ -30,6 +33,7 @@ export default function AdminDashboard() {
         setApprovedEntries(results.filter(e => e.approved));
       };
       fetchAll();
+      getDocs(collection(db, 'meaningSuggestions')).then(snapshot => setSuggestions(snapshot.docs.map(d => ({ ...d.data(), id: d.id })))).catch(() => setSuggestionError('Δεν φορτώθηκαν οι προτάσεις σημασίας.'));
     }
   }, [role]);
 
@@ -37,6 +41,27 @@ export default function AdminDashboard() {
     await updateDoc(doc(db, 'entries', id), { approved: true });
     setPendingEntries(prev => prev.filter(e => e.id !== id));
     setApprovedEntries(prev => [...prev, pendingEntries.find(e => e.id === id)]);
+  };
+
+  const moderateSuggestion = async (suggestion, approve) => {
+    setBusySuggestion(suggestion.id); setSuggestionError('');
+    try {
+      const suggestionRef = doc(db, 'meaningSuggestions', suggestion.id);
+      if (approve) {
+        await runTransaction(db, async transaction => {
+          const entryRef = doc(db, 'entries', suggestion.entryId);
+          const current = await transaction.get(entryRef);
+          const pending = await transaction.get(suggestionRef);
+          if (!pending.exists()) throw new Error('Η πρόταση έχει ήδη εξεταστεί.');
+          if (!current.exists()) throw new Error('Η φράση δεν υπάρχει πλέον.');
+          if (current.data().meaning?.trim()) throw new Error('Η φράση έχει ήδη σημασία. Ελέγξτε την πριν από άλλη αλλαγή.');
+          transaction.update(entryRef, { meaning: pending.data().meaning });
+          transaction.delete(suggestionRef);
+        });
+      } else await deleteDoc(suggestionRef);
+      setSuggestions(previous => previous.filter(item => item.id !== suggestion.id));
+    } catch (error) { setSuggestionError(error.message || 'Η ενέργεια απέτυχε.'); }
+    finally { setBusySuggestion(null); }
   };
 
   const handleReject = async (id) => {
@@ -75,6 +100,15 @@ export default function AdminDashboard() {
   return (
     <div className="section">
       <div className="section-content">
+        <h2>Προτάσεις σημασίας</h2>
+        {suggestionError && <p role="alert">{suggestionError}</p>}
+        {suggestions.length === 0 ? <p>Δεν υπάρχουν προτάσεις σημασίας προς έγκριση.</p> : <ul>
+          {suggestions.map(suggestion => <li key={suggestion.id}>
+            <strong>{suggestion.phrase}</strong>: {suggestion.meaning} — {suggestion.uploadedByUsername}
+            <button disabled={busySuggestion !== null} onClick={() => moderateSuggestion(suggestion, true)}>Έγκριση σημασίας</button>
+            <button disabled={busySuggestion !== null} onClick={() => moderateSuggestion(suggestion, false)}>Απόρριψη</button>
+          </li>)}
+        </ul>}
         <h2>Φράσεις προς έγκριση</h2>
         {pendingEntries.length === 0 ? (
           <p>Δεν υπάρχουν εκκρεμείς φράσεις προς έγκριση</p>

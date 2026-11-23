@@ -37,7 +37,7 @@ export default function LetterPage() {
               <li key={entry.id}>
                 <Link to={`/entry/${entry.id}`}>
                   <strong>{entry.phrase}</strong>
-                </Link>: {entry.meaning} — uploaded by {entry.uploadedByUsername || entry.uploadedBy}
+                </Link>{entry.meaning?.trim() ? `: ${entry.meaning}` : <> · <Link className="add-meaning-link" to={`/entry/${entry.id}`}>Πρόσθεσε σημασία</Link></>} — {entry.uploadedByUsername || entry.uploadedBy}
               </li>
             ))}
           </ul>
