@@ -20,6 +20,8 @@ export default function AdminDashboard() {
   const [suggestionError, setSuggestionError] = useState('');
   const [busySuggestion, setBusySuggestion] = useState(null);
   const [ , setApprovedEntries ] = useState([]);
+  const [contactMessages, setContactMessages] = useState([]);
+  const [contactError, setContactError] = useState('');
 
   const entryRefs = useRef({}); // κρατάει DOM refs για κάθε entry
 
@@ -33,6 +35,7 @@ export default function AdminDashboard() {
         setApprovedEntries(results.filter(e => e.approved));
       };
       fetchAll();
+      getDocs(query(collection(db, 'contactMessages'), orderBy('timestamp', 'desc'))).then(snapshot => setContactMessages(snapshot.docs.map(d => ({ ...d.data(), id: d.id })))).catch(() => setContactError('Δεν φορτώθηκαν τα μηνύματα επικοινωνίας.'));
       getDocs(collection(db, 'meaningSuggestions')).then(snapshot => setSuggestions(snapshot.docs.map(d => ({ ...d.data(), id: d.id })))).catch(() => setSuggestionError('Δεν φορτώθηκαν οι προτάσεις σημασίας.'));
     }
   }, [role]);
@@ -62,6 +65,14 @@ export default function AdminDashboard() {
       setSuggestions(previous => previous.filter(item => item.id !== suggestion.id));
     } catch (error) { setSuggestionError(error.message || 'Η ενέργεια απέτυχε.'); }
     finally { setBusySuggestion(null); }
+  };
+
+  const handleDeleteMessage = async (id) => {
+    setContactError('');
+    try {
+      await deleteDoc(doc(db, 'contactMessages', id));
+      setContactMessages(prev => prev.filter(m => m.id !== id));
+    } catch { setContactError('Η διαγραφή του μηνύματος απέτυχε.'); }
   };
 
   const handleReject = async (id) => {
@@ -135,6 +146,15 @@ export default function AdminDashboard() {
             ))}
           </ul>
         )}
+        <h2>Μηνύματα επικοινωνίας</h2>
+        {contactError && <p role="alert">{contactError}</p>}
+        {contactMessages.length === 0 ? <p>Δεν υπάρχουν μηνύματα.</p> : <ul>
+          {contactMessages.map(m => <li key={m.id}>
+            <strong>{m.name}</strong> (<a href={`mailto:${m.email}`}>{m.email}</a>){m.timestamp?.toDate && ` — ${m.timestamp.toDate().toLocaleString('el-GR')}`}
+            <p style={{ whiteSpace: 'pre-wrap', margin: '8px 0' }}>{m.message}</p>
+            <button onClick={() => handleDeleteMessage(m.id)}>Διαγραφή</button>
+          </li>)}
+        </ul>}
         <hr />
         <button onClick={() => navigate('/')}>Πίσω στην Αρχική</button>
       </div>

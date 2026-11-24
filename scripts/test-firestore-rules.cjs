@@ -59,6 +59,15 @@ async function main() {
   await allowed('/meaningSuggestions/proposal', 'admin', 'DELETE');
   await denied('/entries/pending', 'member', 'DELETE');
   await allowed('/entries/pending', 'admin', 'DELETE');
+  const contact = { fields: { ...fields({ name: 'Επισκέπτης', email: 'guest@example.test', message: 'Γεια σας' }), timestamp: { timestampValue: new Date().toISOString() } } };
+  await denied('/contactMessages/bad-time', null, 'PATCH', contact);
+  const contactWrite = (id, email = 'guest@example.test') => ({ writes: [{ update: { name: `${base.split('/v1/')[1]}/contactMessages/${id}`, fields: { name: contact.fields.name, email: field(email), message: contact.fields.message } }, updateTransforms: [{ fieldPath: 'timestamp', setToServerValue: 'REQUEST_TIME' }] }] });
+  await denied(':commit', null, 'POST', contactWrite('bad-email', 'nope'));
+  await allowed(':commit', null, 'POST', contactWrite('guest'));
+  await denied('/contactMessages/guest', null);
+  await denied('/contactMessages/guest', 'member');
+  await allowed('/contactMessages/guest', 'admin');
+  await allowed('/contactMessages/guest', 'admin', 'DELETE');
   console.log('PASS: public phrases, private profiles, own submissions, admin moderation, and privilege escalation checks');
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });

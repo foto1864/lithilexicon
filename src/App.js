@@ -11,6 +11,7 @@ import SubmitPreview from './/app/SubmitPreview';
 import LetterPage from './/app/LetterPage';
 import SearchResults from './app/SearchResults';
 import EntryPage from './app/EntryPage';
+import About from './app/About';
 
 // Import from current
 import Home from './/app/Home';
@@ -39,6 +40,7 @@ function App() {
           <Route path="/submit-preview" element={<SubmitPreview />} />
           <Route path="/letter/:letter" element={<LetterPage />} />
           <Route path="/search" element={<SearchResults />} />
+          <Route path="about" element={<About />} />
         </Route>
       </Routes>
     </Router>

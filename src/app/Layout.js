@@ -25,6 +25,7 @@ export default function Layout() {
           </Link>
           <nav className="main-nav" aria-label="Κύρια πλοήγηση">
             <NavLink to="/" end>Αρχική</NavLink>
+            <NavLink to="/about">Σχετικά</NavLink>
             {!user && <NavLink to="/login">Σύνδεση</NavLink>}
             {user && <NavLink to="/profile">Προφίλ</NavLink>}
             {user && <button type="button" onClick={handleLogout}>Αποσύνδεση</button>}
@@ -35,7 +36,7 @@ export default function Layout() {
         <div className="discovery-bar"><div className="discovery-inner"><SearchBar /><span className="browse-label">Περιήγηση ανά γράμμα</span><LetterNav /></div></div>
       </header>
       <main id="main-content" tabIndex="-1">{(profileError || logoutError) && <p className="section-content" role="alert">{profileError || logoutError}</p>}<Outlet /></main>
-      <footer><div className="footer-inner"><Link className="footer-brand" to="/">Ληθιλεξικόν<span>Η γλώσσα μας έχει μνήμη.</span></Link><p>© {new Date().getFullYear()} Ληθιλεξικόν</p><Link to={user ? '/submit' : '/register'}>Γίνε μέρος της συλλογής ↗</Link></div></footer>
+      <footer><div className="footer-inner"><Link className="footer-brand" to="/">Ληθιλεξικόν<span>Η γλώσσα μας έχει μνήμη.</span></Link><p>© {new Date().getFullYear()} Ληθιλεξικόν · <Link to="/about">Σχετικά</Link> · <Link to="/about#epikoinonia">Επικοινωνία</Link></p><Link to={user ? '/submit' : '/register'}>Γίνε μέρος της συλλογής ↗</Link></div></footer>
     </div>
   );
 }
